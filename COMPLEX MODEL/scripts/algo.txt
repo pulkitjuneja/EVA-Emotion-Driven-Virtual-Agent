@@ -1,0 +1,7 @@
+1. The Blender operator recieves the phoneme data via a socket connected to our running Chatbot.
+2. The phoneme data consists of a list of Mouth Cues containing the Phoneme letter and the time duration for each phoneme shape.
+3. The Meshes for both the face and the jaw contain predefined blend shapes which can be used to animate the expressions of the face. Both phoneme and emotion are mapped to some blend shapes.
+4. The time duration of the Mouth Cue is multiplied by the required FPS (frames per second) and then rounded to the nearest integer. This gives the number of frames needed for that particular blend shape animation.
+5. For each Mouth Cue two frames are inserted (which are are synchronized with the number of frames required for the transition) into the current scene timeline using the Blender API. These frame transitions are created by giving the frames a value between 0 and 1. Where 0 is the blank expression and 1 is the final expression.
+6. Emotions are similarly mapped to different blend shapes which define all vertex positions starting from the basic face expression to create the overall expression. The face expression animation is done exponentially at first, made stable and then returns to the rest state.
+7. Once the animation is created, Blender plays the animation by interpolating the vertex positions between the stored blend shapes in the key frame. 

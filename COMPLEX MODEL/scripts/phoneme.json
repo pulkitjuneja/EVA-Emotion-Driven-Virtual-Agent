@@ -1,0 +1,11 @@
+{
+  "metadata": {
+    "soundFile": "C:\\Users\\Daniel\\Desktop\\av\\hi\\hi.wav",
+    "duration": 0.47
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.2, "value": "W" },
+    { "start": 0.2, "end": 1.2, "value": "O" },
+    { "start": 1.2, "end": 1.4, "value": "W" }
+  ]
+}
