@@ -33,6 +33,7 @@ def addFaceShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
 def addJawShapeKeyFrame (shapeKeyName, previousKeyName, startFrame, frameCount):
     jawShapeKeyParent = bpy.data.meshes['jaw'].shape_keys
     jawKeyName = getJawKeyName (shapeKeyName)
+
     
 
 
@@ -47,9 +48,10 @@ def getJawKeyName(shapeKeyName):
 
 def main():
     scene = bpy.context.scene
+    scene.render.fps=60
     fps = scene.render.fps
     clearAllAnimation()
-    with open('Documents/projects/EVA/scripts/phoneme.json') as myfile:
+    with open('..\\scripts\\phoneme.json') as myfile:
         data = myfile.read().replace('\n', '')
     phonemes = json.loads(data)
     mouthCues = phonemes['mouthCues']
@@ -60,7 +62,7 @@ def main():
         addFaceShapeKeyFrame(
             animationData[1], previousKey, framecounter, animationData[0])
         previousKey = animationData[1]
-        framecounter += animationData[0] + 1
+        framecounter += animationData[0]
     scene.frame_set(1)
     scene.frame_end = framecounter + 1
     bpy.ops.screen.animation_play()
