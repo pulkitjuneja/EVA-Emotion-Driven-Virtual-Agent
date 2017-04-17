@@ -30,11 +30,22 @@ def addFaceShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
     faceShapeKeyParent.keyframe_insert(dataPath, frame=finalFrame)
 
 
-def addJawShapeKeyFrame (shapeKeyName, previousKeyName, startFrame, frameCount):
+def addJawShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
     jawShapeKeyParent = bpy.data.meshes['jaw'].shape_keys
-    jawKeyName = getJawKeyName (shapeKeyName)
-
-    
+    jawKeyName = getJawKeyName(shapeKeyName)
+    dataPath = dataPathPrefix + jawKeyName + dataPathSuffix
+    previousJawKeyName = None
+    if previousKeyName:
+        previousJawKeyName = getJawKeyName(previousKeyName)
+        dataPathPrev = dataPathPrefix + previousJawKeyName + dataPathSuffix
+    finalFrame = startFrame + frameCount
+    if previousJawKeyName != None and previousJawKeyName != jawKeyName:
+        jawShapeKeyParent.key_blocks[jawKeyName].value = 0.0
+        jawShapeKeyParent.keyframe_insert(dataPath, frame=startFrame)
+        jawShapeKeyParent.key_blocks[previousJawKeyName].value = 0.0
+        jawShapeKeyParent.keyframe_insert(dataPathPrev, frame=finalFrame)
+    jawShapeKeyParent.key_blocks[jawKeyName].value = 1.0
+    jawShapeKeyParent.keyframe_insert(dataPath, frame=finalFrame)
 
 
 def getJawKeyName(shapeKeyName):
@@ -48,10 +59,10 @@ def getJawKeyName(shapeKeyName):
 
 def main():
     scene = bpy.context.scene
-    scene.render.fps=60
+    scene.render.fps = 60
     fps = scene.render.fps
     clearAllAnimation()
-    with open('..\\scripts\\phoneme.json') as myfile:
+    with open('Documents/projects/EVA/scripts/phoneme.json') as myfile:
         data = myfile.read().replace('\n', '')
     phonemes = json.loads(data)
     mouthCues = phonemes['mouthCues']
@@ -62,6 +73,8 @@ def main():
         addFaceShapeKeyFrame(
             animationData[1], previousKey, framecounter, animationData[0])
         previousKey = animationData[1]
+        addJawShapeKeyFrame(
+            animationData[1], previousKey, framecounter, animationData[0])
         framecounter += animationData[0]
     scene.frame_set(1)
     scene.frame_end = framecounter + 1

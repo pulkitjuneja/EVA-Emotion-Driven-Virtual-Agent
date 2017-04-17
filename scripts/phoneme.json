@@ -5,8 +5,8 @@
   },
   "mouthCues": [
     { "start": 0.00, "end": 0.05, "value": "X" },
-    { "start": 0.05, "end": 0.27, "value": "D" },
-    { "start": 0.27, "end": 0.31, "value": "C" },
+    { "start": 0.05, "end": 0.27, "value": "F" },
+    { "start": 0.27, "end": 0.31, "value": "E" },
     { "start": 0.31, "end": 0.43, "value": "B" },
     { "start": 0.43, "end": 0.47, "value": "X" }
   ]
