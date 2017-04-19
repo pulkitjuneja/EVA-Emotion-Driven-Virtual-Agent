@@ -9,7 +9,7 @@ dataPathSuffix = "\"].value"
 def getShapeKeyAnimationInfo(mouthCue, fps):
     frames = (float(mouthCue['end']) - float(mouthCue['start'])) * fps
     frames = round(frames)
-    print(frames)
+    # print(frames)
     phoneme = mouthCue['value']
     for name in shapeKeyNames:
         if phoneme in name:
@@ -39,6 +39,7 @@ def addJawShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
         previousJawKeyName = getJawKeyName(previousKeyName)
         dataPathPrev = dataPathPrefix + previousJawKeyName + dataPathSuffix
     finalFrame = startFrame + frameCount
+    print (jawKeyName , previousJawKeyName)
     if previousJawKeyName != None and previousJawKeyName != jawKeyName:
         jawShapeKeyParent.key_blocks[jawKeyName].value = 0.0
         jawShapeKeyParent.keyframe_insert(dataPath, frame=startFrame)
@@ -70,11 +71,9 @@ def main():
     framecounter = 1
     for x in mouthCues:
         animationData = getShapeKeyAnimationInfo(x, fps)
-        addFaceShapeKeyFrame(
-            animationData[1], previousKey, framecounter, animationData[0])
+        addFaceShapeKeyFrame(animationData[1], previousKey, framecounter, animationData[0])
+        addJawShapeKeyFrame(animationData[1], previousKey, framecounter, animationData[0])
         previousKey = animationData[1]
-        addJawShapeKeyFrame(
-            animationData[1], previousKey, framecounter, animationData[0])
         framecounter += animationData[0]
     scene.frame_set(1)
     scene.frame_end = framecounter + 1
