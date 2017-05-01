@@ -23,6 +23,7 @@ class socketModal(bpy.types.Operator):
         print("Listen End")
 
     def execute(self, context):
+        print ("execute")
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.socket.setblocking(0)
         self.socket.bind(("127.0.0.1", self.port))
@@ -32,15 +33,14 @@ class socketModal(bpy.types.Operator):
         return {'RUNNING_MODAL'}
 
     def modal(self, context, event):
-
+        print ("modal")
         if event.type == "TIMER":
             data = None
             try:
                 data = self.socket.recv(1024 * 1024)
             except socket.error:
                 print ("no data") 
-                return {"RUNNING_MODAL"}
-            print(data)
+        main(context, data) # call to animation controller
         if event.type == 'BACK_SLASH':
             self.socket.close()
             return {'FINISHED'}
@@ -48,5 +48,3 @@ class socketModal(bpy.types.Operator):
 
 
 bpy.utils.register_class(socketModal)
-
-import bpy

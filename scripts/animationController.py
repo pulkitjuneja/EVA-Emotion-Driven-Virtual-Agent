@@ -58,13 +58,11 @@ def getJawKeyName(shapeKeyName):
         return 'C'
 
 
-def main(context):
+def main(context, data):
     scene = context.scene
     scene.render.fps = 60
     fps = scene.render.fps
     clearAllAnimation()
-    with open('Documents/projects/EVA/scripts/phoneme.json') as myfile:
-        data = myfile.read().replace('\n', '')
     phonemes = json.loads(data)
     mouthCues = phonemes['mouthCues']
     previousKey = None
