@@ -9,7 +9,6 @@ dataPathSuffix = "\"].value"
 def getShapeKeyAnimationInfo(mouthCue, fps):
     frames = (float(mouthCue['end']) - float(mouthCue['start'])) * fps
     frames = round(frames)
-    # print(frames)
     phoneme = mouthCue['value']
     for name in shapeKeyNames:
         if phoneme in name:

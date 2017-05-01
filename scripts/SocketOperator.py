@@ -3,8 +3,9 @@ import socket
 import os
 import sys
 
-absolutePath = "/Users/pulkitjuneja/Documents/projects/EVA/scripts"
-sys.path.append(absolutePath)
+absolutePathMac = "/Users/pulkitjuneja/Documents/projects/EVA/scripts"
+absolutePathWindows = "D:\\Projects\\EVA\\scripts"
+sys.path.append(absolutePathWindows)
 
 from animationController import main
 
