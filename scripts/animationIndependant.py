@@ -9,7 +9,6 @@ dataPathSuffix = "\"].value"
 def getShapeKeyAnimationInfo(mouthCue, fps):
     frames = (float(mouthCue['end']) - float(mouthCue['start'])) * fps
     frames = round(frames)
-    # print(frames)
     phoneme = mouthCue['value']
     for name in shapeKeyNames:
         if phoneme in name:
@@ -48,6 +47,18 @@ def addJawShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
     jawShapeKeyParent.key_blocks[jawKeyName].value = 1.0
     jawShapeKeyParent.keyframe_insert(dataPath, frame=finalFrame)
 
+def addExpressionFrames(frameCount, sentiment):
+     faceShapeKeyParent = bpy.data.meshes['face'].shape_keys
+     oneFourth = round(frameCount/4)
+     threeFourth = 3 * oneFourth
+     dataPath = dataPathPrefix + sentiment + dataPathSuffix
+     faceShapeKeyParent.key_blocks[sentiment].value = 0
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=1)
+     faceShapeKeyParent.key_blocks[sentiment].value = 1
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=oneFourth)
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=threeFourth)
+     faceShapeKeyParent.key_blocks[sentiment].value = 0
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=frameCount)
 
 def getJawKeyName(shapeKeyName):
     if shapeKeyName in ['D', 'H']:
@@ -75,6 +86,7 @@ def main():
         addJawShapeKeyFrame(animationData[1], previousKey, framecounter, animationData[0])
         previousKey = animationData[1]
         framecounter += animationData[0]
+    addExpressionFrames (framecounter,"Happy")
     scene.frame_set(1)
     scene.frame_end = framecounter + 1
     bpy.ops.screen.animation_play()
