@@ -1,5 +1,5 @@
 import bpy
-import json
+import json 
 
 shapeKeyNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'X']
 dataPathPrefix = "key_blocks[\""
@@ -28,6 +28,19 @@ def addFaceShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
         faceShapeKeyParent.keyframe_insert(dataPathPrevious, frame=finalFrame)
     faceShapeKeyParent.keyframe_insert(dataPath, frame=finalFrame)
 
+
+def addExpressionFrames(frameCount, sentiment):
+     faceShapeKeyParent = bpy.data.meshes['face'].shape_keys
+     oneFourth = round(frameCount/4)
+     threeFourth = 3 * oneFourth
+     dataPath = dataPathPrefix + sentiment + dataPathSuffix
+     faceShapeKeyParent.key_blocks[sentiment].value = 0
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=1)
+     faceShapeKeyParent.key_blocks[sentiment].value = 1
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=oneFourth)
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=threeFourth)
+     faceShapeKeyParent.key_blocks[sentiment].value = 0
+     faceShapeKeyParent.keyframe_insert(dataPath,frame=frameCount)
 
 def addJawShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
     jawShapeKeyParent = bpy.data.meshes['jaw'].shape_keys
@@ -72,9 +85,11 @@ def main(context, data):
         addJawShapeKeyFrame(animationData[1], previousKey, framecounter, animationData[0])
         previousKey = animationData[1]
         framecounter += animationData[0]
+    addExpressionFrames(framecounter,phonemes['sentiment'])
     scene.frame_set(1)
     scene.frame_end = framecounter + 1
     bpy.ops.screen.animation_play()
+    return framecounter
 
 
 def clearAllAnimation():

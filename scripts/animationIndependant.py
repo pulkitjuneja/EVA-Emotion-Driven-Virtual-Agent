@@ -1,6 +1,7 @@
 import bpy
 import json
 
+
 shapeKeyNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'X']
 dataPathPrefix = "key_blocks[\""
 dataPathSuffix = "\"].value"
