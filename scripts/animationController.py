@@ -1,5 +1,6 @@
 import bpy
 import json 
+import subprocess
 
 shapeKeyNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'X']
 dataPathPrefix = "key_blocks[\""
@@ -29,14 +30,18 @@ def addFaceShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
     faceShapeKeyParent.keyframe_insert(dataPath, frame=finalFrame)
 
 
-def addExpressionFrames(frameCount, sentiment):
+def addExpressionFrames(frameCount, sentScore):
+     if sentScore < 0.4:
+         sentiment = "Sad"
+     else :
+         sentiment = "Happy"
      faceShapeKeyParent = bpy.data.meshes['face'].shape_keys
      oneFourth = round(frameCount/4)
      threeFourth = 3 * oneFourth
      dataPath = dataPathPrefix + sentiment + dataPathSuffix
      faceShapeKeyParent.key_blocks[sentiment].value = 0
      faceShapeKeyParent.keyframe_insert(dataPath,frame=1)
-     faceShapeKeyParent.key_blocks[sentiment].value = 1
+     faceShapeKeyParent.key_blocks[sentiment].value = sentScore
      faceShapeKeyParent.keyframe_insert(dataPath,frame=oneFourth)
      faceShapeKeyParent.keyframe_insert(dataPath,frame=threeFourth)
      faceShapeKeyParent.key_blocks[sentiment].value = 0
@@ -89,11 +94,15 @@ def main(context, data):
     scene.frame_set(1)
     scene.frame_end = framecounter + 1
     bpy.ops.screen.animation_play()
+    print ("called")
+    subprocess.Popen (['afplay',phonemes['audioData']])
     return framecounter
 
 
 def clearAllAnimation():
     faceShapeKeyParent = bpy.data.meshes['face'].shape_keys
+    jawShapeKeyParent = bpy.data.meshes['jaw'].shape_keys
+    jawShapeKeyParent.animation_data_clear()
     faceShapeKeyParent.animation_data_clear()
 
 
