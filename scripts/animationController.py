@@ -33,8 +33,10 @@ def addFaceShapeKeyFrame(shapeKeyName, previousKeyName, startFrame, frameCount):
 def addExpressionFrames(frameCount, sentScore):
      if sentScore < 0.4:
          sentiment = "Sad"
+         sentScore = (0.5 - sentScore)*2
      else :
          sentiment = "Happy"
+         sentScore = (sentScore - 0.5)*2
      faceShapeKeyParent = bpy.data.meshes['face'].shape_keys
      oneFourth = round(frameCount/4)
      threeFourth = 3 * oneFourth
