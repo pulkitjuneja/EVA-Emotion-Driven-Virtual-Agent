@@ -10,5 +10,5 @@
     { "start": 0.31, "end": 0.43, "value": "B" },
     { "start": 0.43, "end": 0.47, "value": "X" }
   ],
-  "sentiment":"Sad"
+  "sentiment":0.2
 }
